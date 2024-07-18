@@ -1,0 +1,11 @@
+def monoalphabetic_substitution_cipher(text, key):
+    table = str.maketrans(key, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    return text.upper().translate(table)
+
+# Example usage:
+plaintext = "Hello, World!"
+key = "ZYXWVUTSRQPONMLKJIHGFEDCBA"
+encrypted_text = monoalphabetic_substitution_cipher(plaintext, key)
+print(f"Encrypted text: {encrypted_text}")
+//
+=== Code Execution Successful ===//
