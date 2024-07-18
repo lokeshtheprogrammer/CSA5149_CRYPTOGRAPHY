@@ -1,0 +1,59 @@
+def generate_playfair_matrix(keyword):
+    alphabet = "ABCDEFGHIKLMNOPQRSTUVWXYZ"
+    keyword = keyword.upper().replace("J", "I")
+    matrix = []
+    for char in keyword:
+        if char not in matrix and char in alphabet:
+            matrix.append(char)
+    for char in alphabet:
+        if char not in matrix:
+            matrix.append(char)
+    return [matrix[i:i+5] for i in range(0, len(matrix), 5)]
+
+def find_position(matrix, char):
+    for row in range(5):
+        for col in range(5):
+            if matrix[row][col] == char:
+                return row, col
+    return None
+
+def decrypt_playfair(ciphertext, matrix):
+    plaintext = ""
+    ciphertext = ciphertext.upper().replace("J", "I")
+    pairs = [ciphertext[i:i+2] for i in range(0, len(ciphertext), 2)]
+    for pair in pairs:
+        if len(pair) < 2:
+            continue
+        row1, col1 = find_position(matrix, pair[0])
+        row2, col2 = find_position(matrix, pair[1])
+        if row1 is None or row2 is None:
+            continue
+        if row1 == row2:
+            plaintext += matrix[row1][(col1 - 1) % 5]
+            plaintext += matrix[row2][(col2 - 1) % 5]
+        elif col1 == col2:
+            plaintext += matrix[(row1 - 1) % 5][col1]
+            plaintext += matrix[(row2 - 1) % 5][col2]
+        else:
+            plaintext += matrix[row1][col2]
+            plaintext += matrix[row2][col1]
+    return plaintext
+
+matrix = generate_playfair_matrix("MFHIKUNOPQZVWXYLEARGDSTBC")
+ciphertext = "KXJEYUREBEZWEHEWRYTUHEYFSKREHEGOYFIWTTTUOLKSYCAJPOBOTEIZONTXBYBNTGONEYCUEZWRGDSONSXBOUYWRHEBAAHYUSEDQ"
+decrypted_text = decrypt_playfair(ciphertext, matrix)
+
+print("Playfair Matrix:")
+for row in matrix:
+    print(row)
+
+print(f"Ciphertext: {ciphertext}")
+print(f"Decrypted Text: {decrypted_text}")
+//Playfair Matrix:
+['M', 'F', 'H', 'I', 'K']
+['U', 'N', 'O', 'P', 'Q']
+['Z', 'V', 'W', 'X', 'Y']
+['L', 'E', 'A', 'R', 'G']
+['D', 'S', 'T', 'B', 'C']
+Ciphertext: KXJEYUREBEZWEHEWRYTUHEYFSKREHEGOYFIWTTTUOLKSYCAJPOBOTEIZONTXBYBNTGONEYCUEZWRGDSONSXBOUYWRHEBAAHYUSEDQ
+Decrypted Text: IYFRZQALSRYVAFAVGXDOFAVKCFALFAAQVKHXSSDOUAFCQGRHONTPSAMXNUBWCXSPCANUGVDQLVXALCTNFEPRNQXVAIRSEEKWNDLS
