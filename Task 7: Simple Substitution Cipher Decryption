@@ -1,0 +1,32 @@
+import collections
+
+# The ciphertext
+ciphertext = """53‡‡†305))6*;4826)4‡.)4‡);806*;48†8¶60))85;;]8*;:‡*8†83
+(88)5*†;46(;88*96*?;8)*‡(;485);5*†2:*‡(;4956*2(5*—4)8¶8*
+;4069285);)6†8)4‡‡;1(‡9;48081;8:8‡1;48†85;4)485†528806*81
+(‡9;48;(88;4(‡?34;48)4‡;161;:188;‡?"""
+
+# Helper function to replace characters in the ciphertext
+def replace_chars(text, char_map):
+    return ''.join(char_map.get(c, c) for c in text)
+
+# Frequency analysis of the ciphertext
+freq = collections.Counter(ciphertext)
+print(freq.most_common())
+
+# Create a mapping based on the analysis and common English letters
+char_map = {
+    '8': 'E', '4': 'T', '‡': 'H', '5': 'A', '6': 'O', '2': 'N', '1': 'R', '3': 'I', 
+    '9': 'S', '0': 'D', '(': 'L', ')': 'U', '*': 'M', ';': 'C', ':': 'Y', '.': 'W',
+    '¶': 'G', '—': 'B', '?': 'V', ']': 'F', '[': 'P', '†': 'K'
+}
+
+# Decrypt the message using the character map
+decrypted_message = replace_chars(ciphertext, char_map)
+print(f"Decrypted Message:\n{decrypted_message}")
+//[('8', 34), (';', 26), ('4', 19), (')', 16), ('‡', 15), ('*', 14), ('5', 12), ('6', 11), ('(', 9), ('†', 8), ('1', 7), ('0', 6), ('2', 5), ('9', 5), ('3', 4), (':', 4), ('\n', 3), ('?', 3), ('¶', 2), ('.', 1), (']', 1), ('—', 1)]
+Decrypted Message:
+AIHHKIDAUUOMCTENOUTHWUTHUCEDOMCTEKEGODUUEACCFEMCYHMEKEI
+LEEUAMKCTOLCEEMSOMVCEUMHLCTEAUCAMKNYMHLCTSAOMNLAMBTUEGEM
+CTDOSNEAUCUOKEUTHHCRLHSCTEDERCEYEHRCTEKEACTUTEAKANEEDOMER
+LHSCTECLEECTLHVITCTEUTHCRORCYREECHV//
