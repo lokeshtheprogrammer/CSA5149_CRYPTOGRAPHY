@@ -1,0 +1,52 @@
+import string
+from collections import Counter
+
+# Function to find modular inverse of a under modulo m
+def mod_inverse(a, m):
+    for x in range(1, m):
+        if (a * x) % m == 1:
+            return x
+    return None
+
+# Function to decrypt the affine cipher
+def affine_decrypt(ciphertext, a, b):
+    decrypted_text = ""
+    mod_inv_a = mod_inverse(a, 26)
+    if mod_inv_a is None:
+        return "No modular inverse found; decryption not possible."
+    
+    for char in ciphertext:
+        if char in string.ascii_uppercase:
+            y = ord(char) - ord('A')
+            x = (mod_inv_a * (y - b)) % 26
+            decrypted_text += chr(x + ord('A'))
+        else:
+            decrypted_text += char
+    return decrypted_text
+
+# Given information
+ciphertext = "..."  # Put your ciphertext here
+most_freq_letter = 'B'
+second_most_freq_letter = 'U'
+
+# Frequency of letters in the English language
+english_freq_order = "ETAOINSHRDLCUMWFGYPBVKJXQZ"
+
+# Find the corresponding plaintext letters for the most frequent letters in the ciphertext
+plaintext_freq_letter_1 = 'E'
+plaintext_freq_letter_2 = 'T'
+
+# Calculate y1, y2, x1, x2
+y1 = ord(most_freq_letter) - ord('A')
+y2 = ord(second_most_freq_letter) - ord('A')
+x1 = ord(plaintext_freq_letter_1) - ord('A')
+x2 = ord(plaintext_freq_letter_2) - ord('A')
+
+# Calculate a and b
+a = (y1 - y2) * mod_inverse(x1 - x2, 26) % 26
+b = (y1 - a * x1) % 26
+
+# Decrypt the ciphertext
+decrypted_text = affine_decrypt(ciphertext, a, b)
+
+print(f"Decrypted Text: {decrypted_text}")
