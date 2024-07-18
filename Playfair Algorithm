@@ -1,0 +1,51 @@
+def prepare_playfair_key(key):
+    key = key.replace(" ", "").upper()
+    key = key.replace("J", "I")  # Replace J with I
+    alphabet = "ABCDEFGHIKLMNOPQRSTUVWXYZ"
+    key_set = set(key)
+    key_list = [char for char in key]
+    
+    for char in alphabet:
+        if char not in key_set:
+            key_list.append(char)
+            
+    return ''.join(key_list)
+
+def playfair_cipher(plaintext, key):
+    key = prepare_playfair_key(key)
+    plaintext = plaintext.replace(" ", "").upper().replace("J", "I")
+    ciphertext = []
+    
+    i = 0
+    while i < len(plaintext):
+        if i == len(plaintext) - 1:
+            pair = plaintext[i] + 'X'
+        elif plaintext[i] == plaintext[i + 1]:
+            pair = plaintext[i] + 'X'
+            i += 1
+        else:
+            pair = plaintext[i] + plaintext[i + 1]
+            i += 2
+        
+        row1, col1 = divmod(key.index(pair[0]), 5)
+        row2, col2 = divmod(key.index(pair[1]), 5)
+        
+        if row1 == row2:
+            ciphertext.append(key[row1 * 5 + (col1 + 1) % 5])
+            ciphertext.append(key[row2 * 5 + (col2 + 1) % 5])
+        elif col1 == col2:
+            ciphertext.append(key[((row1 + 1) % 5) * 5 + col1])
+            ciphertext.append(key[((row2 + 1) % 5) * 5 + col2])
+        else:
+            ciphertext.append(key[row1 * 5 + col2])
+            ciphertext.append(key[row2 * 5 + col1])
+    
+    return ''.join(ciphertext)
+
+# Example usage:
+plaintext = "LOKESH"
+key = "MONARCHY"
+encrypted_text = playfair_cipher(plaintext, key)
+print(f"Encrypted text: {encrypted_text}")
+//
+=== Code Execution Successful ===//
