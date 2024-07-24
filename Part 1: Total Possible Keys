@@ -1,0 +1,21 @@
+import math
+
+# Total possible keys without considering identical encryption results
+total_possible_keys = math.factorial(25)
+
+# Reductions due to identical encryption results
+row_col_swaps = math.factorial(5)**2
+cyclic_shifts = 5**2
+
+# Effectively unique keys
+unique_keys = total_possible_keys // (row_col_swaps * cyclic_shifts)
+
+# Approximate powers of 2
+total_possible_keys_pow2 = math.log2(total_possible_keys)
+unique_keys_pow2 = math.log2(unique_keys)
+
+total_possible_keys, total_possible_keys_pow2, unique_keys, unique_keys_pow2
+// result (15511210043330985984000000,
+ 83.68151360887518,
+ 43086694564808294400,
+ 65.22387622788341)
