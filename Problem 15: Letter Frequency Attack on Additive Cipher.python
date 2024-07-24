@@ -1,0 +1,48 @@
+def letter_frequency_attack_additive(ciphertext):
+    letter_freq = {
+        'E': 12.02, 'T': 9.10, 'A': 8.12, 'O': 7.68, 'I': 7.31, 'N': 6.95,
+        'S': 6.28, 'R': 6.02, 'H': 5.92, 'D': 4.32, 'L': 3.98, 'U': 2.88,
+        'C': 2.71, 'M': 2.61, 'F': 2.30, 'Y': 2.11, 'W': 2.09, 'G': 2.03,
+        'P': 1.82, 'B': 1.49, 'V': 1.11, 'K': 0.69, 'X': 0.17, 'Q': 0.11,
+        'J': 0.10, 'Z': 0.07
+    }
+
+    ciphertext = ciphertext.upper()
+    freq_analysis = {}
+    for char in ciphertext:
+        if char.isalpha():
+            freq_analysis[char] = freq_analysis.get(char, 0) + 1
+
+    freq_analysis_sorted = sorted(freq_analysis.items(), key=lambda x: x[1], reverse=True)
+    most_common_cipher = freq_analysis_sorted[0][0]
+
+    key_guess = (ord(most_common_cipher) - ord('E')) % 26
+    possible_plaintexts = []
+
+    for shift in range(26):
+        possible_plaintext = ''
+        for char in ciphertext:
+            if char.isalpha():
+                decrypted_char = chr(((ord(char) - ord('A') - shift) % 26) + ord('A'))
+                possible_plaintext += decrypted_char
+            else:
+                possible_plaintext += char
+        possible_plaintexts.append(possible_plaintext)
+
+    return possible_plaintexts[:10]
+
+ciphertext = "VJKUBKUBCBOGUUCIG"
+possible_plaintexts = letter_frequency_attack_additive(ciphertext)
+for pt in possible_plaintexts:
+    print("Possible Plaintext:", pt)
+// result Possible Plaintext: TEISZISEZAMESSAGE
+Possible Plaintext: SDHRYHRDYZLDRRZFD
+Possible Plaintext: RCGQXGQCXYKCQQYEC
+Possible Plaintext: QBFWQFQBWXJBPPCDB
+Possible Plaintext: PAEVPEPAVWIAOOBCA
+Possible Plaintext: OZDUDOOUVHIZNNABZ
+Possible Plaintext: NYCTCNNTUGHYMMAAY
+Possible Plaintext: MXBSBMMTFGFXLLZZX
+Possible Plaintext: LWARALLEFFEWKYYWW
+Possible Plaintext: KVZQZKKDEEDVJXXVV
+
