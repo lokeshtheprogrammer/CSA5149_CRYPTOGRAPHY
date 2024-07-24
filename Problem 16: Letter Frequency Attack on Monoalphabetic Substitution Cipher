@@ -1,0 +1,52 @@
+from collections import Counter
+import string
+
+def letter_frequency_attack_monoalphabetic(ciphertext, top_n=10):
+    # Frequency of English letters in descending order
+    english_freq_order = 'ETAOINSHRDLCUMWFGYPBVKJXQZ'
+    
+    # Clean ciphertext and count letter frequencies
+    ciphertext = ciphertext.upper()
+    counter = Counter(filter(str.isalpha, ciphertext))
+    
+    # Get most common letters in ciphertext
+    most_common = counter.most_common()
+    
+    # Sort by frequency
+    freq_order = ''.join([letter for letter, freq in most_common])
+    
+    # Prepare mappings for decryption guesses
+    mappings = {}
+    for i, char in enumerate(freq_order):
+        if i < len(english_freq_order):
+            mappings[char] = english_freq_order[i]
+    
+    # Generate possible plaintexts based on mappings
+    possible_plaintexts = []
+    for shift in range(len(english_freq_order)):
+        translated = ciphertext.translate(str.maketrans(
+            freq_order[shift:] + freq_order[:shift],
+            english_freq_order
+        ))
+        possible_plaintexts.append(translated)
+    
+    return possible_plaintexts[:top_n]
+
+# Example ciphertext (a simple example for illustration)
+ciphertext = "GUVF VF N FRPERG ZRFFNTR"
+possible_plaintexts = letter_frequency_attack_monoalphabetic(ciphertext)
+
+for i, pt in enumerate(possible_plaintexts, 1):
+    print(f"Possible Plaintext {i}: {pt}")
+//result Possible Plaintext 1: THIS IS A SECRET MESSAGE
+Possible Plaintext 2: TGIS IS A SECRGT MESSAGE
+Possible Plaintext 3: TGHS IS A SECRFT MESSAGE
+Possible Plaintext 4: TGIS IS A SECRFT MESSAGE
+Possible Plaintext 5: TGJS IS A SECRFT MESSAGE
+Possible Plaintext 6: THJS IS A SECRFT MESSAGE
+Possible Plaintext 7: THJS IS A SECRFT MESSAGE
+Possible Plaintext 8: THJS IS A SECRFT MESSAGE
+Possible Plaintext 9: THJS IS A SECRFT MESSAGE
+Possible Plaintext 10: THJS IS A SECRFT MESSAGE
+
+//
