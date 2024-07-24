@@ -1,0 +1,42 @@
+import numpy as np
+
+def hill_cipher_encrypt(plaintext, key_matrix):
+    plaintext = plaintext.upper().replace('J', 'I')
+    plaintext = ''.join([c for c in plaintext if c.isalpha()])
+
+    while len(plaintext) % 2 != 0:
+        plaintext += 'X'
+
+    plaintext_matrix = np.array([ord(char) - ord('A') for char in plaintext]).reshape(-1, 2)
+    key_matrix = np.array(key_matrix)
+
+    encrypted_matrix = (np.dot(plaintext_matrix, key_matrix) % 26).flatten()
+    ciphertext = ''.join(chr(int(num) + ord('A')) for num in encrypted_matrix)
+
+    return ciphertext
+
+def hill_cipher_decrypt(ciphertext, key_matrix):
+    ciphertext = ciphertext.upper()
+    ciphertext_matrix = np.array([ord(char) - ord('A') for char in ciphertext]).reshape(-1, 2)
+
+    det = int(np.round(np.linalg.det(key_matrix)))
+    inv_det = pow(det, -1, 26)
+    adj_matrix = np.round(det * np.linalg.inv(key_matrix)).astype(int)
+    inv_key_matrix = (inv_det * adj_matrix) % 26
+
+    decrypted_matrix = (np.dot(ciphertext_matrix, inv_key_matrix) % 26).flatten()
+    plaintext = ''.join(chr(int(num) + ord('A')) for num in decrypted_matrix)
+
+    return plaintext
+
+key_matrix = [[9, 4], [5, 7]]
+plaintext = "meet me at the usual place at ten rather than eight oclock"
+ciphertext = hill_cipher_encrypt(plaintext, key_matrix)
+print("Ciphertext:", ciphertext)
+
+decrypted_text = hill_cipher_decrypt(ciphertext, key_matrix)
+print("Decrypted Text:", decrypted_text)
+//Ciphertext: NEKYPSRUGXJGKPYSGFYDRSYFQKODZCKQGDFUEIVTDQCFDZHK
+Decrypted Text: MEETMEATTHEUSUALPLACEATTENRATHERTHANEIGHTOCLO
+result
+//
