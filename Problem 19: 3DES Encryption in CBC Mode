@@ -1,0 +1,34 @@
+from Crypto.Cipher import DES3
+from Crypto.Util.Padding import pad, unpad
+from Crypto.Random import get_random_bytes
+
+# Example key and IV for 3DES (24-byte key)
+key = DES3.adjust_key_parity(get_random_bytes(24))  # 24 bytes for 3DES key
+iv = get_random_bytes(8)  # 8-byte IV for DES
+
+# Example plaintext
+plaintext = b'This is a secret message.'
+
+# Padding the plaintext to be a multiple of 8 bytes
+plaintext_padded = pad(plaintext, DES3.block_size)
+
+# Creating the 3DES cipher in CBC mode
+cipher = DES3.new(key, DES3.MODE_CBC, iv)
+
+# Encrypting the plaintext
+ciphertext = cipher.encrypt(plaintext_padded)
+
+print("Ciphertext (hex):", ciphertext.hex())
+
+# Decryption process
+decipher = DES3.new(key, DES3.MODE_CBC, iv)
+decrypted_padded = decipher.decrypt(ciphertext)
+
+# Remove padding from the decrypted plaintext
+decrypted_text = unpad(decrypted_padded, DES3.block_size)
+
+print("Decrypted Plaintext:", decrypted_text.decode())
+//output Ciphertext (hex): a8b4f0848e7428489c1c48f78b96f7bb88b6567f2c82b1f8d6ae40c3f2c0c317
+Decrypted Plaintext: This is a secret message.
+
+//
