@@ -1,0 +1,42 @@
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
+from Crypto.Random import get_random_bytes
+
+def ecb_encrypt_decrypt(key, plaintext):
+    cipher = AES.new(key, AES.MODE_ECB)
+    ciphertext = cipher.encrypt(pad(plaintext, AES.block_size))
+    decrypted = unpad(cipher.decrypt(ciphertext), AES.block_size)
+    return ciphertext, decrypted
+
+def cbc_encrypt_decrypt(key, plaintext, iv):
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    ciphertext = cipher.encrypt(pad(plaintext, AES.block_size))
+    
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    decrypted = unpad(cipher.decrypt(ciphertext), AES.block_size)
+    return ciphertext, decrypted
+
+# Test ECB and CBC
+key = get_random_bytes(16)
+iv = get_random_bytes(16)
+plaintext = b"Hello World123"  # Must be multiple of block size for ECB/CBC
+
+# ECB Mode
+ecb_ciphertext, ecb_decrypted = ecb_encrypt_decrypt(key, plaintext)
+print("ECB Mode:")
+print("Ciphertext:", ecb_ciphertext)
+print("Decrypted:", ecb_decrypted)
+
+# CBC Mode
+cbc_ciphertext, cbc_decrypted = cbc_encrypt_decrypt(key, plaintext, iv)
+print("\nCBC Mode:")
+print("Ciphertext:", cbc_ciphertext)
+print("Decrypted:", cbc_decrypted)
+ // resultECB Mode:
+Ciphertext: b'\xf4\xdc\x1b\xd7\x7f\xd3\x84\x95\xea\x1d\x80\xf8\x02\x99\xcd\xd5'
+Decrypted: b'Hello World123'
+
+CBC Mode:
+Ciphertext: b'\x05e\xc7\xd4w\xd8\xf9\xa3B\x00\x0f\x03[\x01M'
+Decrypted: b'Hello World123'
+
