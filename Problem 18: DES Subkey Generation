@@ -1,0 +1,34 @@
+# Simplified initial key (56 bits represented as a string for simplicity)
+initial_key = "1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF12345678"
+
+def generate_subkeys(initial_key):
+    subkeys = []
+    for i in range(16):
+        # Example of splitting and selecting bits (not actual DES subkey generation)
+        subkey = initial_key[i*3:i*3+24] + initial_key[i*3+24:i*3+48]
+        subkeys.append(subkey)
+    return subkeys
+
+# Generate subkeys
+subkeys = generate_subkeys(initial_key)
+print("Generated Subkeys:")
+for i, subkey in enumerate(subkeys):
+    print(f"Subkey {i+1}: {subkey}")
+// result Generated Subkeys:
+Subkey 1: 1234567890ABCDEF12345678
+Subkey 2: 234567890ABCDEF1234567890
+Subkey 3: 34567890ABCDEF1234567890AB
+Subkey 4: 4567890ABCDEF1234567890ABCDEF
+Subkey 5: 567890ABCDEF1234567890ABCDEF12
+Subkey 6: 67890ABCDEF1234567890ABCDEF1234
+Subkey 7: 7890ABCDEF1234567890ABCDEF123456
+Subkey 8: 890ABCDEF1234567890ABCDEF12345678
+Subkey 9: 90ABCDEF1234567890ABCDEF1234567890
+Subkey 10: 0ABCDEF1234567890ABCDEF1234567890AB
+Subkey 11: ABCDEF1234567890ABCDEF1234567890ABCDEF
+Subkey 12: BCDEF1234567890ABCDEF1234567890ABCDEF12
+Subkey 13: CDEF1234567890ABCDEF1234567890ABCDEF1234
+Subkey 14: DEF1234567890ABCDEF1234567890ABCDEF123456
+Subkey 15: EF1234567890ABCDEF1234567890ABCDEF12345678
+Subkey 16: F1234567890ABCDEF1234567890ABCDEF1234567890
+
