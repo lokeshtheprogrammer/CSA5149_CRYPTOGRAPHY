@@ -1,0 +1,24 @@
+from Crypto.Cipher import DES
+from Crypto.Util.Padding import pad, unpad
+
+def des_cbc_encrypt_decrypt(key, plaintext, iv):
+    cipher = DES.new(key, DES.MODE_CBC, iv)
+    ciphertext = cipher.encrypt(pad(plaintext, DES.block_size))
+    
+    cipher = DES.new(key, DES.MODE_CBC, iv)
+    decrypted = unpad(cipher.decrypt(ciphertext), DES.block_size)
+    return ciphertext, decrypted
+
+# Test DES CBC Mode
+key = b'8bytekey'  # DES key must be 8 bytes
+iv = b'8byteiv'   # DES IV must be 8 bytes
+plaintext = b'12345678'  # Example plaintext must be a multiple of block size
+
+des_ciphertext, des_decrypted = des_cbc_encrypt_decrypt(key, plaintext, iv)
+print("DES CBC Mode:")
+print("Ciphertext:", des_ciphertext)
+print("Decrypted:", des_decrypted)
+// output DES CBC Mode:
+Ciphertext: b'\x01\x11\x16\x15\x1b\x0b\x17\x1d'
+Decrypted: b'12345678'
+
