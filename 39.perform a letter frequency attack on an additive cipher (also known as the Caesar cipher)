@@ -1,0 +1,44 @@
+from collections import Counter
+
+# English letter frequency (approximate) in descending order
+ENGLISH_FREQ_ORDER = 'ETAOINSHRDLCUMWFGYPBVKJXQZ'
+
+def frequency_analysis_attack(ciphertext, top_n=10):
+    # Clean the ciphertext and convert to uppercase
+    cleaned_ciphertext = ''.join(filter(str.isalpha, ciphertext.upper()))
+    
+    # Count the frequency of each letter in the ciphertext
+    letter_freq = Counter(cleaned_ciphertext)
+    
+    # Get the most common letters in the ciphertext in descending order
+    most_common_letters = [letter for letter, _ in letter_freq.most_common()]
+    
+    # Generate possible plaintexts based on frequency analysis
+    possible_plaintexts = []
+    for shift in range(26):
+        decrypted_text = []
+        for char in cleaned_ciphertext:
+            if char.isalpha():
+                shifted_index = (ord(char) - ord('A') - shift) % 26
+                decrypted_text.append(chr(shifted_index + ord('A')))
+            else:
+                decrypted_text.append(char)
+        possible_plaintexts.append(''.join(decrypted_text))
+    
+    return possible_plaintexts[:top_n]
+
+def main():
+    # Example ciphertext
+    ciphertext = "KHOOR ZRUOG"
+    top_n = 10
+    
+    # Get the top N possible plaintexts
+    top_plaintexts = frequency_analysis_attack(ciphertext, top_n)
+    
+    # Display the possible plaintexts
+    print(f"Top {top_n} possible plaintexts:")
+    for i, plaintext in enumerate(top_plaintexts, 1):
+        print(f"{i}. {plaintext}")
+
+if __name__ == "__main__":
+    main()
