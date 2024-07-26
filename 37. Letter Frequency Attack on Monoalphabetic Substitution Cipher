@@ -1,0 +1,13 @@
+from collections import Counter
+
+def frequency_analysis_attack(ciphertext):
+    # Frequency order for English letters
+    freq_order = 'ETAOINSHRDLCUMWFGYPBVKJXQZ'
+    counter = Counter(ciphertext.replace(' ', '').upper())
+    most_common = [char for char, _ in counter.most_common()]
+    translation_table = str.maketrans(''.join(most_common), freq_order[:len(most_common)])
+    return ciphertext.upper().translate(translation_table)
+
+ciphertext = "KHOOR ZRUOG"  # Encrypted text
+possible_plaintext = frequency_analysis_attack(ciphertext)
+print("Possible plaintext:", possible_plaintext)
