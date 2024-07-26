@@ -1,0 +1,11 @@
+from Crypto.Cipher import DES
+from Crypto.Util.Padding import pad
+
+key = b'12345678'
+plaintext = b'Hello, World!'
+
+# ECB Mode
+cipher_ecb = DES.new(key, DES.MODE_ECB)
+ciphertext_ecb = cipher_ecb.encrypt(pad(plaintext, DES.block_size))
+
+print("Ciphertext (ECB):", ciphertext_ecb.hex())
