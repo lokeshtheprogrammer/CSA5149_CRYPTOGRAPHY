@@ -1,0 +1,11 @@
+def regenerate_keys(e, d, n):
+    phi_n = (e * d - 1) // n  # This is not exact; additional steps needed to find φ(n)
+    return None, None  # This demonstrates the principle; real calculation is complex
+
+# Example values
+e = 17
+d = 2753
+n = 3233
+
+new_e, new_d = regenerate_keys(e, d, n)
+print(f"New keys: e = {new_e}, d = {new_d} (unsafe to reuse n)")
