@@ -1,0 +1,9 @@
+def diffie_hellman_modified(a, x):
+    return a * x  # Incorrect usage
+
+# Example values
+a = 5
+x = 3
+
+shared_value = diffie_hellman_modified(a, x)
+print(f"Shared value: {shared_value} (not secure)")
