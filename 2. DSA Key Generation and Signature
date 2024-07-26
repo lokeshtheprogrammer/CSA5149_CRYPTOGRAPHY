@@ -1,0 +1,14 @@
+from Crypto.PublicKey import DSA
+from Crypto.Signature import DSS
+from Crypto.Hash import SHA256
+from Crypto.Random import random
+
+message = b"Hello, DSA!"
+
+key = DSA.generate(1024)
+h = SHA256.new(message)
+signer = DSS.new(key, 'fips-186-3')
+signature = signer.sign(h)
+
+print("Message:", message)
+print("Signature:", signature.hex())
