@@ -1,0 +1,22 @@
+import random
+
+def generate_key(length):
+    return [random.randint(0, 25) for _ in range(length)]
+
+def encrypt_vigenere(plaintext, key):
+    ciphertext = []
+    for i in range(len(plaintext)):
+        if plaintext[i].isalpha():
+            shift = key[i % len(key)]
+            base = ord('A') if plaintext[i].isupper() else ord('a')
+            encrypted_char = chr((ord(plaintext[i]) - base + shift) % 26 + base)
+            ciphertext.append(encrypted_char)
+        else:
+            ciphertext.append(plaintext[i])
+    return ''.join(ciphertext)
+
+plaintext = "HELLO WORLD"
+key = generate_key(len(plaintext))
+ciphertext = encrypt_vigenere(plaintext, key)
+print("Key:", key)
+print("Ciphertext:", ciphertext)
