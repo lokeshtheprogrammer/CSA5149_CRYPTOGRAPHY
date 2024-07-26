@@ -1,0 +1,19 @@
+import math
+
+def find_common_factor(n, block):
+    gcd = math.gcd(n, block)
+    if gcd > 1:
+        p = gcd
+        q = n // p
+        return p, q
+    return None, None
+
+# Example values
+n = 3233  # Example modulus n = p * q
+block = 65  # Example plaintext block
+
+p, q = find_common_factor(n, block)
+if p and q:
+    print(f"Factors of n: p = {p}, q = {q}")
+else:
+    print("No common factor found")
