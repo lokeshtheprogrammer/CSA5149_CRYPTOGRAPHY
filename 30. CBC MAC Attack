@@ -1,0 +1,14 @@
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad
+
+def cbc_mac(key, data):
+    cipher = AES.new(key, AES.MODE_CBC, iv=b'\x00' * 16)
+    return cipher.encrypt(pad(data, AES.block_size))[-16:]
+
+key = b'sixteen byte key'
+X = b'This is a test.'
+T = cbc_mac(key, X)
+X_XOR_T = bytes(a ^ b for a, b in zip(X, T))
+new_mac = cbc_mac(key, X + X_XOR_T)
+print(f"MAC of X: {T}")
+print(f"MAC of X || (X ⊕ T): {new_mac}")
