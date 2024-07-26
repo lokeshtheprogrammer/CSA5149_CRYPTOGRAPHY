@@ -1,0 +1,10 @@
+from Crypto.Cipher import DES
+
+key = b'12345678'  # 8-byte key
+plaintext = b'HelloDES'  # Must be a multiple of 8 bytes
+
+cipher = DES.new(key, DES.MODE_ECB)
+ciphertext = cipher.encrypt(plaintext)
+
+print("Plaintext:", plaintext)
+print("Ciphertext:", ciphertext.hex())
