@@ -1,0 +1,11 @@
+def sha3_non_zero_bit_propagation():
+    # Assume initial state matrix with capacity portion all zeros
+    initial_state = [0] * 1024
+    non_zero_bits = [i for i in range(512, 1024)]  # Simulated non-zero bits in lanes
+    for i in range(1024):
+        if i in non_zero_bits:
+            initial_state[i] = 1
+    return initial_state.count(1)
+
+non_zero_count = sha3_non_zero_bit_propagation()
+print(f"Number of non-zero bits: {non_zero_count}")
